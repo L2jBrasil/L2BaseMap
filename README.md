@@ -8,7 +8,7 @@ A Leaflet Base Map for Lineage2 Related Web Applications
 
 
 
-## Official Topic: https://www.l2jbrasil.com/index.php?/topic/126388-l2jphp-one-library-to-rule-them-all/
+## Official Topic: https://www.l2jbrasil.com/topic/140557-l2-base-map/
 
 
 
