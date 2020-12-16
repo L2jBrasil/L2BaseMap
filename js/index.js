@@ -62,9 +62,11 @@ function generateMarkers()
 		.then(function (response) {
 		// The API call was successful!
 		return response.text();
-	}).then(function (text) {	
+	}).then(function (text) {
 		return JSON.parse(text)
 	}).then(function (data) {	
+		// This group will contain all markers
+		let pointGroup = L.layerGroup();
 		for (let obj of data.results)
 		{
 			/**
