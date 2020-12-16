@@ -58,58 +58,44 @@ function timeConverter(UNIX_timestamp){
 }
 function generateMarkers()
 {
-	let xhttp = new XMLHttpRequest();
-	xhttp.onloadend = function()
-	{
-		if (this.status === 200)
+	fetch(MAP_SERVER)
+		.then(function (response) {
+		// The API call was successful!
+		return response.text();
+	}).then(function (text) {	
+		return JSON.parse(text)
+	}).then(function (data) {	
+		for (let obj of data.results)
 		{
-			if (this.responseText)
-			{
-				// This group will contain all markers
-				let pointGroup = L.layerGroup();
-
-	 			let data = JSON.parse(this.responseText);
-	 			for (let obj of data.results)
-	 			{
-	 				/**
-					 * This is done because leaflet simple CRS uses bottom-left as pixel origin.
-					 * If we change its pixel origin, couple of minor things will get broken.
-					 */
-					let point = L.CRS.Simple.transformation.transform(L.point(obj.locx, obj.locy));
-					// y - latitude, x - longitude
-					
-					let flagIcon = L.icon(
-					{
-						iconUrl: 'images/marks/pos.png',
-						shadowUrl: 'node_modules/leaflet/dist/images/marker-shadow.png',
-						iconSize:    [29, 32],
-						iconAnchor:  [14, 32],
-						popupAnchor: [1, -34],
-						tooltipAnchor: [16, -28],
-						shadowSize:  [41, 41]
-					});
-					let marker = L.marker([point.y, point.x], {icon: flagIcon, title: obj.name, riseOnHover: true});
-					
-					map.setView([point.y, point.x], map.getZoom());
-										
-					let tooltipContent = '<div class="tooltip"><div>Location: <span>' + obj.locx + ', ' + obj.locy + ', ' + obj.locz + '</span></div></div>';
-					
-					// Create marker tooltip and add both to map
-					marker.bindTooltip(tooltipContent).addTo(pointGroup);
-						 			}
-	 			// Now that layer is completed, add it to map
-				map.addLayer(pointGroup);
-				
-	 		}
+			/**
+			* This is done because leaflet simple CRS uses bottom-left as pixel origin.
+			* If we change its pixel origin, couple of minor things will get broken.
+			*/
+			let point = L.CRS.Simple.transformation.transform(L.point(obj.locx, obj.locy));
+			// y - latitude, x - longitude
+			let flagIcon = L.icon(
+				{
+					iconUrl: 'images/marks/pos.png',
+					shadowUrl: 'node_modules/leaflet/dist/images/marker-shadow.png',
+					iconSize:    [29, 32],
+					iconAnchor:  [14, 32],
+					popupAnchor: [1, -34],
+					tooltipAnchor: [16, -28],
+					shadowSize:  [41, 41]
+				});
+			let marker = L.marker([point.y, point.x], {icon: flagIcon, title: obj.name, riseOnHover: true});
+			map.setView([point.y, point.x], map.getZoom());
+			//You can Customize the tooltip with anything you want
+			let tooltipContent = '<div class="tooltip"><div>Location: <span>' + obj.locx + ', ' + obj.locy + ', ' + obj.locz + '</span></div></div>';					
+			// Create marker tooltip and add both to map
+			marker.bindTooltip(tooltipContent).addTo(pointGroup);
 		}
-		else
-		{
-			alert("Connection failed!");
-		}
-	};
-	xhttp.open("GET", MAP_SERVER, true);
-	
-	xhttp.send();
+		// Now that layer is completed, add it to map
+		map.addLayer(pointGroup);
+	}).catch(function (err) {
+		// There was an error
+		console.warn('Something went wrong.', err);
+	});
 }
 
 /**
