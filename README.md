@@ -10,6 +10,8 @@ A Leaflet Base Map for Lineage2 Related Web Applications
 
 ## Official Topic: https://www.l2jbrasil.com/topic/140557-l2-base-map/
 
+## Demo: https://l2-base-map.vercel.app/
+
 
 
 ## Usage:
@@ -21,12 +23,3 @@ const MAP_SERVER = 'server/sample.json';
 ```
 
 Check check images/maps folder for available maps.
-
-
-
-![L2JBrDevelopers](base-map.png "Desenvolvido por Macacos altamente treinados")
-
-## Oficial Topic: https://www.l2jbrasil.com/topic/140557-l2-base-map/
-
-
-## Demo: https://l2-base-map.vercel.app/
