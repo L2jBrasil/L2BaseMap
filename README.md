@@ -22,4 +22,4 @@ const MAP_OVERLAY = "images/maps/IL.webp";
 const MAP_SERVER = 'server/sample.json';
 ```
 
-Check check images/maps folder for available maps.
+Check check [images/maps](images/maps) folder for available maps.
