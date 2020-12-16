@@ -1,0 +1,33 @@
+html, body
+			{
+				height: 100%;
+				margin: 0;
+				background-color: #ddd;
+			}
+			
+			#map
+			{
+				width: 100%;
+				height: 100%;
+			}
+			
+			.tooltip
+			{
+				font-size: 13px;
+				font-weight: bold;
+				white-space: normal;
+				background-color: #333;
+				color: #eee;
+				
+			}
+			
+			.tooltip div {
+				margin: 1px;
+				border: 1px solid rgba(255,255,255,0.3);
+				padding: 4px 9px 4px 9px;
+				color: #eee;
+			}
+			.tooltip span {
+				
+				color: #bca890;
+			}
