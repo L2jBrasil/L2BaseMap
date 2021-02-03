@@ -19,8 +19,8 @@ const BOUNDS = [[MAP_MIN_Y, MAP_MIN_X], [MAP_MAX_Y, MAP_MAX_X]];
 
 // Initialize map
 const map = L.map('map', {crs: L.CRS.Simple, maxBoundsViscosity: 1, zoomDelta: 0.5, zoomSnap: 0.5, attributionControl: false, markerZoomAnimation: false});
-// Set l2 map overlay
-L.imageOverlay(MAP_OVERLAY, BOUNDS).addTo(map);
+// Set l2 default map overlay
+let mapOverlay = L.imageOverlay(MAP_OVERLAY, BOUNDS).addTo(map);
 
 // Map bounds
 map.fitBounds(BOUNDS);
@@ -110,4 +110,12 @@ function resizeMapContent()
 	let boundZoom = map.getBoundsZoom(BOUNDS, true);
 	map.setMinZoom(boundZoom);
 	map.setZoom(boundZoom);
+}
+
+
+function changeMap(newImage){
+	if (map.hasLayer(mapOverlay)) {
+	    map.removLayer(mapOverlay);
+	  }
+	mapOverlay = L.imageOverlay(newImage, BOUNDS).addTo(map);
 }
