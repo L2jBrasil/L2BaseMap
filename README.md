@@ -10,7 +10,7 @@ A Leaflet Base Map for Lineage2 Related Web Applications
 
 ## Official Topic: https://www.l2jbrasil.com/topic/140557-l2-base-map/
 
-## Demo: https://l2-base-map.vercel.app/
+## Demo: https://l2map.l2jbrasil.com
 
 
 
