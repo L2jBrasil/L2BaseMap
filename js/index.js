@@ -16,11 +16,90 @@ const MAP_MAX_Y = ((TILE_Y_MAX - TILE_ZERO_COORD_Y) + 1) * TILE_SIZE;
 /** World Map Bounds */
 const BOUNDS = [[MAP_MIN_Y, MAP_MIN_X], [MAP_MAX_Y, MAP_MAX_X]];
 
+/** Available BaseMaps **/
+
+const baseMaps = {
+    "C3": L.imageOverlay("images/maps/C3.webp", BOUNDS),
+    "C4": L.imageOverlay("images/maps/C4.webp", BOUNDS),
+    "C5": L.imageOverlay("images/maps/C5.webp", BOUNDS),	
+    "Interlude": L.imageOverlay("images/maps/IL.webp", BOUNDS),
+    "CT1": L.imageOverlay("images/maps/CT1.webp", BOUNDS),	
+    "CT1 (hdi)": L.imageOverlay("images/maps/CT1-hdi.webp", BOUNDS),
+    "Gracia (art map)": L.imageOverlay("images/maps/art-map.webp", BOUNDS),
+    "Gracia (no background)": L.imageOverlay("images/maps/clear-map.webp", BOUNDS),
+    "Custom map (khanda.club)": L.imageOverlay("images/maps/l2khanda.webp", BOUNDS),
+	
+};
 
 // Initialize map
-const map = L.map('map', {crs: L.CRS.Simple, maxBoundsViscosity: 1, zoomDelta: 0.5, zoomSnap: 0.5, attributionControl: false, markerZoomAnimation: false});
+const map = L.map('map',{
+	crs: L.CRS.Simple, maxBoundsViscosity: 1, zoomDelta: 0.5, zoomSnap: 0.5, attributionControl: false, markerZoomAnimation: false,
+});
 // Set l2 default map overlay
-let mapOverlay = L.imageOverlay(MAP_OVERLAY, BOUNDS).addTo(map);
+let mapOverlay;
+
+
+// Create overlay control
+let menu = L.control({position: 'topleft'});
+menu.onAdd = function (map) {
+          this._div = document.createElement('div');
+		  this._div.classList.add('leaflet-control-layers-base');
+		  this._div.style.backgroundColor= 'rgba(255,255,255,0.3)';
+		  for(let i in baseMaps){
+			  let iMap = baseMaps[i];
+			  //Preload imageOverlay
+			  
+			  let link = document.createElement('link');
+			  link.setAttribute('rel','preload');
+			  link.setAttribute('href',iMap._url);
+			  link.setAttribute('as','image');
+			  document.head.appendChild(link);
+			  
+			  
+			  let radio = document.createElement('input');
+			  //Set default map to first
+			  if(i == DEFAULT_MAP_OVERLAY){				  
+				radio.setAttribute("checked", true);
+				mapOverlay = iMap.addTo(map);
+			  }
+			  
+			  //Add Cick event
+			  radio.addEventListener('click', (e) => {
+				  if (map.hasLayer(mapOverlay)) {
+					map.removeLayer(mapOverlay);
+				  }
+				  mapOverlay = iMap.addTo(map);
+			  });
+			  
+			  //attributes			  
+			  radio.setAttribute("name", "overlay");
+			  radio.setAttribute("value", i);
+			  radio.setAttribute("type", "radio");			  
+			  radio.classList.add('leaflet-control-layers-selector');
+			  
+			  
+			  let label = document.createElement('label');
+			  let div = document.createElement('div');
+			  let span = document.createElement('span');
+			  span.innerText = i;
+			  
+			  
+			  div.appendChild(radio)
+			  div.appendChild(span)
+			  label.appendChild(div)
+			  
+			  this._div.appendChild(label);
+			  
+		  }
+          return this._div;          
+  };
+
+
+menu.addTo(map);
+
+
+//L.control.layers(baseMaps).addTo(map);
+
 
 // Map bounds
 map.fitBounds(BOUNDS);
@@ -113,9 +192,3 @@ function resizeMapContent()
 }
 
 
-function changeMap(newImage){
-	if (map.hasLayer(mapOverlay)) {
-	    map.removLayer(mapOverlay);
-	  }
-	mapOverlay = L.imageOverlay(newImage, BOUNDS).addTo(map);
-}
